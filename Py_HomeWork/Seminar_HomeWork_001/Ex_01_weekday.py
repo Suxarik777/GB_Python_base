@@ -14,10 +14,13 @@ if user_days > 0 and user_days < 6: print('Нет')
 elif user_days == 6 or user_days == 7: print('Да')
 else: print('Что-то пошло не так! Попробуй ещё раз! Введи числа от 1 до 7')
 
+
+# Другие варианты
+
 # if user_days in range(1,6): # не оптимально, проверка каждого с каждым
 #     print('no')
 
-if 1 <= user_days <=5: print('no')
+# if 1 <= user_days <=5: print('no')
 
 
-print(float('25,5'.replace(',', '.')))
+# print(float('25,5'.replace(',', '.')))
