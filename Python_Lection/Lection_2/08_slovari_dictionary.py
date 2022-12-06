@@ -53,3 +53,4 @@ dictionary['left'] = '⇐'
 print(dictionary['left']) # ⇐
 #print(dictionary['type']) # KeyError: 'type' -> нет такого ключа
 del dictionary['left'] # удаление элемента
+

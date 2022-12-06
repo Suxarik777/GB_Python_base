@@ -19,6 +19,8 @@ def list_mixing(list):
         list[i] = list[help_pos]
         list[help_pos] = help
         i += 1
+        # альтернатива
+        # list[i], list[help_pos] = list[help_pos], list[i]
     return list
 
 
