@@ -2,8 +2,8 @@ from random import randint
 
 
 def random_movie():
-    print('Итак давай выясним кто первый будет ходить? \nЖми на ENTER')
-    input()
+    print('Итак давай выясним кто первый будет ходить?')
+    input('Жми ENTER')
     random_roulette = randint(0, 1)
     if random_roulette == 0:
         print('Поздравляю! Твой ход первый!')
