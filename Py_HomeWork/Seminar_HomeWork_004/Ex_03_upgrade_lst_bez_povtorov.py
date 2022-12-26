@@ -10,9 +10,11 @@
 from random import randint
 import math
 
-lst_mult = [randint(1,1000) for x in range(randint(1, 5))]
-print(lst_mult)
 
+lst = [randint(1, 10) for x in range(1, 10)]
+print(lst)
 
-lst_mult2 = math.prod(lst_mult)
-print(lst_mult2)
+# проверяет каждый новый элемент, который ранее не появлялся в списке, прежде чем добавлять его
+result = [ii for n, ii in enumerate(lst) if ii not in lst[:n]]
+print(result)
+
