@@ -2,12 +2,12 @@ from imports import view_playing_area
 
 
 def user_input_position(who_gamer, user_name_1, user_name_2, max_pos=9):
-    view_playing_area('enumerate_playing_area')
-    user_name = str()
+    # view_playing_area('enumerate_playing_area')
+    user_name = ''
     if who_gamer == 'user_1':
-        user_name == user_name_1
+        user_name = user_name_1
     elif who_gamer == 'user_2':
-        user_name == user_name_2
+        user_name = user_name_2
 
     user_input = int(input(f'{user_name} введите позицию на доске: '))
     if 1 <= user_input <= max_pos:
@@ -43,7 +43,7 @@ def user_name_1():
 
 def user_name_2():
     name = input('Твой ник игрок №2?: ')
-    print('Ну а тебе достаются нолики: 0 ')
+    print('Ну а тебе достаются нолики: O ')
     return name
 
 
@@ -51,4 +51,4 @@ def user_symbol(who_gamer):
     if who_gamer == 'user_1':
         return '+'
     elif who_gamer == 'user_2':
-        return '0'
+        return 'O'
