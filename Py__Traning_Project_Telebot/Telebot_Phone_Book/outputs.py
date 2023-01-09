@@ -35,15 +35,7 @@ def menu_search():
     '\n 3: Поиск номера по имени, фамилии, комментарию') 
 
 
-def read_file():
-    with open('input.csv', 'r', encoding='utf-8') as csvfile:
-        file_reader = csv.reader(csvfile, delimiter=';', skipinitialspace=False)
-        array = []
-        for line, row in enumerate(file_reader):
-            if line>1:
-                file_reader_to_list = (';'.join(row)).split(';')
-                array.append(file_reader_to_list[1:])
-        return array
+
 
 # print_menu()
 # show_all(ar)

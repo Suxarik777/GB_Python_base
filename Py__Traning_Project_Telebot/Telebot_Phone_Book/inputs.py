@@ -2,6 +2,10 @@ import csv
 from outputs import print_menu
 
 
+
+
+
+
 def input_row(array):
     choosen_source = input('Для выбора способа ввода данных, введите: '
                            '\n\t0 - ввод с клавиатуры '
