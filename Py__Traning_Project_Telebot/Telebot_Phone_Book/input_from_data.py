@@ -22,3 +22,14 @@ def recording_str_keyboard(msg: types.Message):
     # bot.send_message(message.chat.id, mess, parse_mode='html')
     text_message = f'Новый контакт\n{text}\n<b>записан</b>'
     bot.send_message(chat_id=msg.from_user.id, text=text_message, parse_mode='html', reply_markup=markup)
+
+
+@bot.message_handler(content_types=['documents'])
+def recording_str_file(msg: types.Message):
+    file_user = msg.document.file_name
+    with open(file_user, 'wb') as file:
+        file.write(bot.download_file(bot.get_file(msg.document.file_id).file_path))
+    bot.send_message(chat_id=msg.from_user.id, text='Ваш файл принят')
+    #сейчас приняв файл единожды, он его постоянно пытается обработать
+
+
