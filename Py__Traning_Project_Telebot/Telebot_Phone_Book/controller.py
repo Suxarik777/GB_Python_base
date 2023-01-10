@@ -5,7 +5,7 @@ from inputs import input_menu_item, input_row, input_index, input_string
 from exports import export_file, export_csv, export_xml, export_html
 from func_for_work_bot import read_file, recording_file
 import emoji
-from str_msg_bot import print_menu, hi_bot
+from str_msg_bot import print_menu
 from input_from_data import recording_str_keyboard
 from telebot import TeleBot, types
 from Token_id import TOKEN_ID
@@ -33,27 +33,41 @@ def start_program(msg: types.Message):
 
 @bot.message_handler(content_types=['text'])
 def menu(msg: types.Message):
-    if(msg.text == emoji.emojize(':scroll: Меню')):
-        bot.send_message(chat_id=msg.chat.id, text=f'{print_menu}')
+    if msg.text == emoji.emojize(':scroll: Меню'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_input = types.KeyboardButton(emoji.emojize(':writing_hand: Ввести данные'))
+        markup.add(button_input)
+        bot.send_message(chat_id=msg.chat.id, text=f'{print_menu}\n\nили жми кнопки', reply_markup=markup)
         bot.register_next_step_handler(msg, get_menu)
 
 
-# 1 menu - ввод данных в телефонную книгу
+# работа с выбором пользователя по меню
 def get_menu(msg: types.Message):
     # bot.send_message(chat_id=msg.chat.id, text=f'Я нахожусь в get_user, ваш выбор{msg.text}')
     # menu_item = input_menu_item()
     menu_item = msg.text # получаем то что ввел пользователь
-    if menu_item == '1':
-        bot.send_message(chat_id=msg.from_user.id, text=f'1 - ввод с клавиатуры \n2 - ввод из файла')
+    if menu_item == '1' or menu_item == emoji.emojize(':writing_hand: Ввести данные'):
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_input_keyboard = types.KeyboardButton(emoji.emojize(':keyboard: с клавиатуры'))
+        button_input_file = types.KeyboardButton(emoji.emojize(':file_folder: из файла'))
+        button_menu = types.KeyboardButton(emoji.emojize(':scroll: Меню'))
+        markup.add(button_input_keyboard, button_input_file, button_menu)
+
+        bot_mess = '1 - ввод с клавиатуры \n2 - ввод из файла\n\nили жми кнопки'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess, reply_markup=markup)
         bot.register_next_step_handler(msg, get_menu_input)
 
 
-
+# работа с вводом данных в базу
 def get_menu_input(msg: types.Message):
     menu_item = msg.text
-    if menu_item == '1':
-        bot.send_message(chat_id=msg.from_user.id, text=f'Введите данные в формате \nИмя Фамилия Телефон Комментарий')
+    if menu_item == '1' or menu_item == emoji.emojize(':keyboard: с клавиатуры'):
+        bot_mess = 'Введите данные в формате \nИмя Фамилия Телефон Комментарий'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess)
         bot.register_next_step_handler(msg, recording_str_keyboard)
+    elif menu_item == emoji.emojize(':scroll: Меню'):
+        bot.register_next_step_handler(msg, menu)
 
 
 # def recording_str_keyboard(msg: types.Message):
