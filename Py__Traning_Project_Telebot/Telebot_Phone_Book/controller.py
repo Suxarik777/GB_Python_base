@@ -6,14 +6,14 @@ from exports import export_file, export_csv, export_xml, export_html
 from func_for_work_bot import read_file, recording_file
 import emoji
 from str_msg_bot import print_menu
-from input_from_data import recording_str_keyboard, recording_str_file
+from input_from_data import get_menu_input
+from edit_data import before_get_menu_edit
 from telebot import TeleBot, types
 from Token_id import TOKEN_ID
 
 TOKEN = TOKEN_ID
 
 bot = TeleBot(TOKEN)
-
 
 @bot.message_handler(commands=['start'])
 def start_program(msg: types.Message):
@@ -36,12 +36,15 @@ def menu(msg: types.Message):
     if msg.text == emoji.emojize(':scroll: Меню'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         button_input = types.KeyboardButton(emoji.emojize(':writing_hand: Ввести данные'))
-        markup.add(button_input)
+        button_edits = types.KeyboardButton(emoji.emojize(':backhand_index_pointing_right: Редактировать'))
+        markup.add(button_input, button_edits)
         bot.send_message(chat_id=msg.chat.id, text=f'{print_menu}\n\nили жми кнопки', reply_markup=markup)
         bot.register_next_step_handler(msg, get_menu)
 
 
+
 # работа с выбором пользователя по меню
+@bot.message_handler(content_types=['text'])
 def get_menu(msg: types.Message):
     # bot.send_message(chat_id=msg.chat.id, text=f'Я нахожусь в get_user, ваш выбор{msg.text}')
     # menu_item = input_menu_item()
@@ -58,23 +61,36 @@ def get_menu(msg: types.Message):
         bot.send_message(chat_id=msg.from_user.id, text=bot_mess, reply_markup=markup)
         bot.register_next_step_handler(msg, get_menu_input)
 
+    if menu_item == '2' or menu_item == emoji.emojize(':backhand_index_pointing_right: Редактировать'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_menu = types.KeyboardButton(emoji.emojize(':scroll: Меню'))
+        markup.add(button_menu)
 
-# работа с вводом данных в базу
-def get_menu_input(msg: types.Message):
-    menu_item = msg.text
+        bot_mess = 'введите номер cтроки'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess, reply_markup=markup)
+        bot.register_next_step_handler(msg, before_get_menu_edit)
 
-    if menu_item == '1' or menu_item == emoji.emojize(':keyboard: с клавиатуры'):
-        bot_mess = 'Введите данные в формате \nИмя Фамилия Телефон Комментарий'
-        bot.send_message(chat_id=msg.from_user.id, text=bot_mess)
-        bot.register_next_step_handler(msg, recording_str_keyboard)
 
-    elif menu_item == '2' or menu_item == emoji.emojize(':file_folder: из файла'):
-        bot_mess = 'Пришлите файл в формате .csv'
-        bot.send_message(chat_id=msg.from_user.id, text=bot_mess)
-        bot.register_next_step_handler(msg, recording_str_file)
 
-    elif menu_item == emoji.emojize(':scroll: Меню'):
-        bot.register_next_step_handler(msg, menu)
+
+
+# вспомогательные функции
+@bot.message_handler(content_types=['text'])
+def re_entry_index_edit(msg: types.Message):
+    if msg.text == emoji.emojize(':backhand_index_pointing_right: повторный ввод'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_menu = types.KeyboardButton(emoji.emojize(':scroll: Меню'))
+        markup.add(button_menu)
+
+        bot_mess = 'введите номер cтроки'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess, reply_markup=markup)
+        bot.register_next_step_handler(msg, before_get_menu_edit)
+
+
+
+
+
+
 
 
 # def recording_str_keyboard(msg: types.Message):

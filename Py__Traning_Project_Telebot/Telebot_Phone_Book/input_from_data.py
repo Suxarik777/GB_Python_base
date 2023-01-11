@@ -1,6 +1,7 @@
 from telebot import TeleBot, types
 from func_for_work_bot import read_file, recording_file
 from Token_id import TOKEN_ID
+
 import emoji
 
 TOKEN = TOKEN_ID
@@ -8,6 +9,23 @@ bot = TeleBot(TOKEN)
 
 
 
+# работа с вводом данных в базу
+@bot.message_handler(content_types=['text'])
+def get_menu_input(msg: types.Message):
+    menu_item = msg.text
+
+    if menu_item == '1' or menu_item == emoji.emojize(':keyboard: с клавиатуры'):
+        bot_mess = 'Введите данные в формате \nИмя Фамилия Телефон Комментарий'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess)
+        bot.register_next_step_handler(msg, recording_str_keyboard)
+
+    elif menu_item == '2' or menu_item == emoji.emojize(':file_folder: из файла'):
+        bot_mess = 'Пришлите файл в формате .csv'
+        bot.send_message(chat_id=msg.from_user.id, text=bot_mess)
+        bot.register_next_step_handler(msg, recording_str_file)
+
+
+@bot.message_handler(content_types=['text'])
 def recording_str_keyboard(msg: types.Message):
     text = str(msg.text)
     data_list = text.split()

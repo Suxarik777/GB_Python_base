@@ -20,3 +20,15 @@ def recording_file(array):
         for text in array:
             res_text = ";".join(text)
             file.writelines(f'{res_text}\n')
+
+
+
+def read_index_row_data():
+    with open('index_row_data.csv', 'r', encoding='utf-8') as csvfile:
+        file_reader = csv.reader(csvfile, delimiter=';', skipinitialspace=False)
+        for line in file_reader:
+            index_row = line
+        return index_row
+def recording_index_row_data(index_row):
+    with open(f'index_row_data.csv', 'w', encoding='utf-8') as file:
+        file.writelines(f'{index_row}\n')
